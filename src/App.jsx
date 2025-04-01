@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 const NumberChecker = () => {
   const [number, setNumber] = useState("");
   const [selectedCheck, setSelectedCheck] = useState("palindrome");
   const [result, setResult] = useState("");
+  const input=useRef(null)
 
   const isPalindrome = (num) => {
     const strNum = num.toString();
@@ -25,31 +26,38 @@ const NumberChecker = () => {
   };
 
   const handleCheck = () => {
-       if(selectedCheck==='palindrome'){
+    if(input.current.value != ''){
+         
+       if(selectedCheck === 'palindrome'){
         if(isPalindrome(number)){
-          setResult("It is palindrome")
+          setResult(`${number} is a palindrome`);
         }
         else{
-          setResult("It is not palindrome")
+          setResult(`${number} is not a palindrome`);
         }
        }
-       else if(selectedCheck==='armstrong'){
+       else if(selectedCheck === 'armstrong'){
         if(isArmstrong(number)){
-          setResult("It is armstrong")
+          setResult(`${number} is an armstrong number`);
         }
         else{
-         setResult('it is not armstrong')
+         setResult(`${number} is not an armstrong number`);
         }
        }
-       else if(selectedCheck==='prime'){
+       else if(selectedCheck === 'prime'){
         if(isPrime(number)){
-          setResult("It is prime")
+          setResult(`${number} is a prime number`);
         }
         else{
-         setResult('it is not prime')
+         setResult(`${number} is not a prime number`);
         }
        }
+       input.current.value = '';
     }
+    else{
+      alert('Please enter a number');
+    }
+}
 
 
   
@@ -64,7 +72,7 @@ const NumberChecker = () => {
             className="form-control"
             placeholder="Enter a number"
             value={number}
-            onChange={(e) => setNumber(e.target.value)}
+            onChange={(e) => setNumber(e.target.value)} ref={input}
           />
         </div>
         <div className="mb-3">
@@ -73,6 +81,7 @@ const NumberChecker = () => {
             value={selectedCheck}
             onChange={(e) => setSelectedCheck(e.target.value)}
           >
+            <option value="select" disabled>select</option>
             <option value="palindrome">Palindrome</option>
             <option value="armstrong">Armstrong</option>
             <option value="prime">Prime</option>
